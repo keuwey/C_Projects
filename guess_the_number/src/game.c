@@ -1,11 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 int main(void) {
-    const unsigned short int NUMBER = 24;
+    srand(time(NULL));
+    const unsigned short int NUMBER = rand() % 41;
     unsigned short int user_guess;
     unsigned short int guesses_left = 5;
 
-    printf("\nI'm thinking of a number between 0 and 50.\n");
+    printf("\nI'm thinking of a number between 0 and 40.\n");
 
     while (guesses_left > 0) {
         printf("You have %hu guess%s left.\n", guesses_left, guesses_left == 1 ? "" : "es");
@@ -24,12 +27,12 @@ int main(void) {
         } else if (user_guess < NUMBER) {
             printf("Wrong! The number is higher than that.\n\n");
         } else {
-            printf("🎉 Congratulations! You got it right!\n");
-            printf("You guessed it in %hu attempt%s.\n", (5 - guesses_left), (5 - guesses_left == 1) ? "" : "s");
+            printf("\n🎉 Congratulations! You got it right!\n");
+            printf("You guessed it in %hu attempt%s.\n\n", (5 - guesses_left), (5 - guesses_left == 1) ? "" : "s");
             return 0;
         }
     }
 
-    printf("❌ Game over! You've used all your guesses. The number was %hu.\n", NUMBER);
+    printf("❌ Game over! You've used all your guesses. The number was %hu.\n\n", NUMBER);
     return 0;
 }
