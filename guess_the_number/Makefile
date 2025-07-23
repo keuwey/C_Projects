@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Wpedantic -O2
+CFLAGS = -Wall -Wextra -Werror -Wshadow -Wconversion -Wpedantic -std=c23 -march=native -flto -O2
 SRC = $(wildcard src/*.c)
 OUT = build/main
 
