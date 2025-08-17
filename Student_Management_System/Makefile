@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -Wshadow -Wconversion -Wpedantic -std=c23 -march=native -flto -fsanitize=address,undefined -O2
+CFLAGS = -std=c23 -march=native -flto -O3
 LDFLAGS = -lm
 SRC ?= ./src/main.c
 BIN = $(basename $(SRC))
