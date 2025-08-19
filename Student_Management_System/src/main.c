@@ -1,115 +1,116 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 typedef struct {
-    char cpf[12];
-    int matricula;
-    char nome[60];
-    int idade;
-    char curso[50];
-} Aluno;
+    char cpf[12];   // ID
+    int matricula;  // Registration Number
+    char nome[60];  // Name
+    int idade;      // Age
+    char curso[50]; // Course Name
+} Student;
 
-char arquivo[12] = "arquivo.txt";
+char file[9] = "file.txt";
 
-int cadastrarAluno(const Aluno *a) {
-    FILE *pont_arq = fopen(arquivo, "a");
-    if (!pont_arq) return 1;
-    fprintf(pont_arq, "%s,%d,%s,%d,%s\n", a->cpf, a->matricula, a->nome, a->idade, a->curso);
-    fclose(pont_arq);
+int registerStudent(const Student *student) {
+    FILE *file_ptr = fopen(file, "a");
+    if (!file_ptr) return 1;
+    fprintf(file_ptr, "%s,%d,%s,%d,%s\n", student->cpf, student->matricula, student->nome, student->idade, student->curso);
+    fclose(file_ptr);
     return 0;
 }
 
-int listarAluno(int matricula) {
-    FILE *pont_arq = fopen(arquivo, "r");
-    if (!pont_arq) {
-        printf("Não foi possível abrir o arquivo.\n");
+int listStudent(int matricula) {
+    FILE *file_ptr = fopen(file, "r");
+    if (!file_ptr) {
+        printf("Could not open file.\n");
         return 1;
     }
-    char linha[256];
-    int encontrado = 0;
+    char line[256];
+    int found = 0;
 
-    while (fgets(linha, sizeof(linha), pont_arq)) {
-        Aluno a;
-        if (sscanf(linha, "%11[^,],%d,%59[^,],%d,%49[^\n]", a.cpf, &a.matricula, a.nome, &a.idade, a.curso) ==
-            5) {
-            if (a.matricula == matricula) {
-                printf("\nAluno encontrado:\n");
-                printf("CPF: %s\n", a.cpf);
-                printf("Matrícula: %d\n", a.matricula);
-                printf("Nome: %s\n", a.nome);
-                printf("Idade: %d\n", a.idade);
-                printf("Curso: %s\n\n", a.curso);
-                encontrado = 1;
+    while (fgets(line, sizeof(line), file_ptr)) {
+        Student student;
+        if (sscanf(line, "%11[^,],%d,%59[^,],%d,%49[^\n]", student.cpf, &student.matricula, student.nome,
+                   &student.idade, student.curso) == 5) {
+            if (student.matricula == matricula) {
+                printf("\nStudent found:\n");
+                printf("CPF: %s\n", student.cpf);
+                printf("Registration Number: %d\n", student.matricula);
+                printf("Name: %s\n", student.nome);
+                printf("Age: %d\n", student.idade);
+                printf("Course: %s\n\n", student.curso);
+                found = 1;
                 break;
             }
         }
     }
 
-    if (!encontrado) {
-        printf("Aluno com matrícula %d não encontrado.\n", matricula);
+    if (!found) {
+        printf("Student with the registration number %d not found.\n", matricula);
     }
 
-    fclose(pont_arq);
+    fclose(file_ptr);
     return 0;
 }
 
 int main() {
-    int escolha;
+    int choice;
     char buffer[128];
 
     while (1) {
-        printf("O que deseja?\n\n");
-        printf("cadastrar aluno: 1\n");
-        printf("Listar aluno: 2\n");
-        printf("Sair: 3\n");
+        printf("What do you want?\n\n");
+        printf("Register a student: 1\n");
+        printf("List a student: 2\n");
+        printf("Exit: 3\n");
         if (!fgets(buffer, sizeof buffer, stdin)) break;
-        escolha = atoi(buffer);
+        choice = atoi(buffer);
 
-        switch (escolha) {
+        switch (choice) {
             case 1:
-                Aluno aluno = {0};
+                Student student = {0};
 
-                printf("CPF (somente numeros): ");
+                printf("CPF (Only numbers): ");
                 if (fgets(buffer, sizeof buffer, stdin)) {
                     buffer[strcspn(buffer, "\n")] = '\0';
-                    strncpy(aluno.cpf, buffer, sizeof aluno.cpf - 1);
-                    aluno.cpf[sizeof aluno.cpf - 1] = '\0';
+                    strncpy(student.cpf, buffer, sizeof student.cpf - 1);
+                    student.cpf[sizeof student.cpf - 1] = '\0';
                 }
 
-                printf("Matrícula: ");
-                if (fgets(buffer, sizeof buffer, stdin)) aluno.matricula = atoi(buffer);
+                printf("Registration number: ");
+                if (fgets(buffer, sizeof buffer, stdin)) student.matricula = atoi(buffer);
 
-                printf("Nome: ");
+                printf("Name: ");
                 if (fgets(buffer, sizeof buffer, stdin)) {
                     buffer[strcspn(buffer, "\n")] = '\0';
-                    strncpy(aluno.nome, buffer, sizeof aluno.nome - 1);
-                    aluno.nome[sizeof aluno.nome - 1] = '\0';
+                    strncpy(student.nome, buffer, sizeof student.nome - 1);
+                    student.nome[sizeof student.nome - 1] = '\0';
                 }
 
-                printf("Idade: ");
-                if (fgets(buffer, sizeof buffer, stdin)) aluno.idade = atoi(buffer);
+                printf("Age: ");
+                if (fgets(buffer, sizeof buffer, stdin)) student.idade = atoi(buffer);
 
-                printf("Curso: ");
+                printf("Course name: ");
                 if (fgets(buffer, sizeof buffer, stdin)) {
                     buffer[strcspn(buffer, "\n")] = '\0';
-                    strncpy(aluno.curso, buffer, sizeof aluno.curso - 1);
-                    aluno.curso[sizeof aluno.curso - 1] = '\0';
+                    strncpy(student.curso, buffer, sizeof student.curso - 1);
+                    student.curso[sizeof student.curso - 1] = '\0';
                 }
 
-                if (cadastrarAluno(&aluno) != 0) {
-                    printf("Erro ao cadastrar aluno.\n");
+                if (registerStudent(&student) != 0) {
+                    printf("Error registering student.\n");
                     return 1;
                 }
 
-                printf("Aluno cadastrado com sucesso.\n");
+                printf("Student successfully registered.\n");
 
                 break;
 
             case 2:
                 int matricula;
-                printf("Digite a matricula para a busca:\n");
+                printf("Enter the registration number to search:\n");
                 if (fgets(buffer, sizeof buffer, stdin)) matricula = atoi(buffer);
-                listarAluno(matricula);
+                listStudent(matricula);
                 break;
 
             case 3:
