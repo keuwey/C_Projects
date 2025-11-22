@@ -5,7 +5,7 @@
 int main(void) {
     srand(time(NULL));
     const unsigned short int NUMBER = rand() % 41;
-    const unsigned short int user_guess;
+    unsigned short int user_guess;
     unsigned short int guesses_left = 5;
 
     printf("\nI'm thinking of a number between 0 and 40.\n");
