@@ -1,0 +1,21 @@
+# Build artifacts
+bin/
+build/
+
+# Object files and libraries
+*.o
+*.a
+*.so
+*.ko
+*.elf
+*.obj
+*.lib
+*.la
+*.lo
+
+# IDE and System files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store

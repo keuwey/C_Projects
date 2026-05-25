@@ -17,7 +17,7 @@ REL_DIR      := $(BUILD_DIR)/release
 # Source files
 # ============================================================
 
-SRCS := $(wildcard $(SRC_DIR)/soma_de_gauss.c)
+SRCS := $(wildcard $(SRC_DIR)/*.c)
 
 DEV_OBJS := $(SRCS:$(SRC_DIR)/%.c=$(DEV_DIR)/%.o)
 REL_OBJS := $(SRCS:$(SRC_DIR)/%.c=$(REL_DIR)/%.o)
@@ -31,6 +31,7 @@ CPPFLAGS := -I$(INC_DIR)
 DEV_CFLAGS := \
 	-std=c23 \
 	-Wall -Wextra -Werror -Wshadow -Wconversion -Wpedantic \
+	-Wnull-dereference -Wdouble-promotion \
 	-g \
 	-fsanitize=address,undefined \
 	-fno-omit-frame-pointer
